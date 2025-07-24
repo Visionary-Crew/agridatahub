@@ -8,3 +8,7 @@ This package contains business logic and orchestration services.
 Usage:
     from app.services.crop_service import CropService
 """
+
+from app.services.price.market_price_service import MandiPriceService
+
+__all__ = [MandiPriceService]
