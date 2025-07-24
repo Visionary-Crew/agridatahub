@@ -7,3 +7,8 @@ This package contains application configuration and settings.
 Usage:
     from app.configuration.settings import settings
 """
+
+from app.configuration.price.price_settings import price_settings
+
+
+__all__ = [price_settings]

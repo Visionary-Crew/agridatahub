@@ -7,3 +7,7 @@ This package contains helper functions and utilities.
 Usage:
     from app.helpers.date_utils import parse_date
 """
+
+from app.helpers.csv_parser import parse_csv
+
+__all__ = [parse_csv]
