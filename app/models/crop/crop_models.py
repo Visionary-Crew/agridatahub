@@ -1,7 +1,7 @@
 from enum import Enum
 from pydantic import BaseModel
-from typing import Optional
-from sqlmodel import SQLModel, Field
+from typing import Optional, List
+from app.models.water_dependency import WaterDependency
 
 class CropType(str, Enum):
     food = "Food"
@@ -51,3 +51,6 @@ class CropMOdel(BaseModel
     other_uses: Optional[str] = None
     image_url: Optional[str] = None
     extra_info: Optional[str] = None
+
+    # Nest water dependencies as a list of WaterDependency (optional)
+    water_dependencies: Optional[List[WaterDependency]] = None
