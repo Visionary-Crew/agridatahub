@@ -10,6 +10,11 @@ on:
 jobs:
   create-pull-request:
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      pull-requests: write
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -29,7 +34,7 @@ jobs:
             echo "pr_exists=false" >> $GITHUB_OUTPUT
           fi
 
-      - name: Create Pull Request
+      - name: Create Pull Request using Template
         if: steps.check_pr.outputs.pr_exists == 'false'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -38,5 +43,4 @@ jobs:
           gh pr create \
             --base development \
             --head "$BRANCH_NAME" \
-            --title "PR from $BRANCH_NAME" \
-            --body "This PR was automatically created upon push to the '$BRANCH_NAME' branch."
+            --title "PR from $BRANCH_NAME"
