@@ -1,0 +1,42 @@
+name: Create Pull Request to Development
+
+on:
+  push:
+    branches:
+      - 'bug/**'
+      - 'feature/**'
+      - 'enhancement/**'
+
+jobs:
+  create-pull-request:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Check for existing Pull Request
+        id: check_pr
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH_NAME: ${{ github.ref_name }}
+        run: |
+          pr_count=$(gh pr list --repo "$GITHUB_REPOSITORY" --head "$BRANCH_NAME" --base "development" --json "number" --jq "length")
+          if [ "$pr_count" -gt 0 ]; then
+            echo "Pull Request already exists for $BRANCH_NAME"
+            echo "pr_exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "No Pull Request found for $BRANCH_NAME"
+            echo "pr_exists=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create Pull Request
+        if: steps.check_pr.outputs.pr_exists == 'false'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH_NAME: ${{ github.ref_name }}
+        run: |
+          gh pr create \
+            --base development \
+            --head "$BRANCH_NAME" \
+            --title "PR from $BRANCH_NAME" \
+            --body "This PR was automatically created upon push to the '$BRANCH_NAME' branch."
