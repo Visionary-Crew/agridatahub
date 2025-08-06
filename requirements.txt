@@ -3,5 +3,7 @@ fastapi==0.116.1
 httpx==0.28.1
 loguru==0.7.3
 pytest==8.4.1
-python-dotenv==1.1.1
 uvicorn==0.35.0
+pydantic-settings==2.10.1
+sqlalchemy==2.0.35
+alembic==1.13.3
